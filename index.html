@@ -1,29 +1,468 @@
 <!DOCTYPE html>
+<!--
+    PRÁCTICA: Estándares HTML5, CSS3 y Accesibilidad Web (WCAG 2.2 AA)
+    ESTUDIANTE: Daniel Antonio Durán Ochoa
+    FICHA ASIGNADA: N.º 10 - Biblioteca Barrial
+    REQUISITOS ESPECIALES DE LA FICHA:
+      1. Temática: Biblioteca Barrial
+      2. Campo especial: Selección con datalist nativo
+      3. Breakpoint principal: 768 px
+      4. Restricción especial: Acordeón accesible con <details> y <summary> (Cero JavaScript)
+    ESTRUCTURA SEMÁNTICA: 100% libre de elementos <div> genéricos.
+-->
 <html lang="es">
 <head>
+    <!-- Metadatos obligatorios para codificación de caracteres y diseño responsivo -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="/duran-daniel-BibliotecaBarial/CSS/estilos.css">
+    <meta name="description" content="Biblioteca Barrial comunitaria - Préstamo gratuito de libros, catálogo literario, novedades, sala de lectura y reserva de citas presenciales para todos los vecinos.">
+    <title>Biblioteca Barrial | Espacio Comunitario de Lectura y Cultura</title>
+    
+    <!-- Enlace a la hoja de estilos externa conforme a la estructura de la práctica -->
+    <link rel="stylesheet" href="css/estilos.css">
 </head>
 
 <body>
-    <header>
-        <img src="/duran-daniel-BibliotecaBarial/Image/logo.png" alt="Logo de la Biblioteca Barrial" width="100" height="100">
-        <h1 color="aliceblue">Biblioteca Barrial</h1>
+    <!--
+        WCAG 2.4.1 (Bypass Blocks): Enlace de salto al contenido principal.
+        Permite a usuarios que navegan con teclado o lectores de pantalla saltar la navegación repetitiva.
+    -->
+    <a href="#contenido-principal" class="enlace-salto">Saltar al contenido principal</a>
 
-            <nav aria-label="Menú Principal">
-        <a href="#inicio">Inicio</a>
-        <a href="mailto:ddurano@est.ups.edu.ec?subject=Biblioteca Barrial&body=Hola buenos dias me contacto con el dueño del web site">Contactar por correo</a>
-    </nav>
+    <!--
+        ELEMENTO <header>: Según WHATWG, representa un grupo de ayudas introductorias o de navegación.
+    -->
+    <header class="encabezado-sitio">
+        <!-- Figura para identidad de marca: logotipo de la biblioteca -->
+        <figure class="marca-sitio">
+            <img src="img/logo.png" alt="Logotipo oficial de la Biblioteca Barrial comunitaria" width="80" height="80" class="logo-imagen">
+            <figcaption class="marca-texto">
+                <span class="marca-titulo">Biblioteca Barrial</span>
+                <span class="marca-subtitulo">Comunidad &amp; Saber</span>
+            </figcaption>
+        </figure>
+
+        <!--
+            ELEMENTO <nav>: Sección de la página cuyo propósito es proporcionar enlaces de navegación.
+            Se agrega aria-label="Navegación principal" para diferenciarlo en lectores de pantalla (WCAG 1.3.1).
+        -->
+        <nav class="navegacion-principal" aria-label="Navegación principal">
+            <ul class="lista-navegacion">
+                <li><a href="#inicio" class="enlace-nav">Inicio</a></li>
+                <li><a href="#sobre-nosotros" class="enlace-nav">Sobre Nosotros</a></li>
+                <li><a href="#novedades" class="enlace-nav">Nuevos Libros</a></li>
+                <li><a href="#catalogo-prestamos" class="enlace-nav">Catálogo</a></li>
+                <li><a href="#preguntas-frecuentes" class="enlace-nav">Preguntas Frecuentes</a></li>
+                <li><a href="#reserva-cita" class="enlace-nav enlace-destacado">Reservar Cita</a></li>
+            </ul>
+        </nav>
     </header>
-    <main>
-        <section id="hero"> 
-            <h1 id="inicio">Biblioteca Barrial</h1>
-            <br>
-            <br>
-        </section>
-    </main>
-</body>
 
+    <!--
+        ELEMENTO <main>: Según WHATWG, representa el contenido principal dominante del cuerpo del documento.
+        Solo debe existir un elemento <main> visible en el documento.
+    -->
+    <main id="contenido-principal" class="contenedor-principal">
+
+        <!--
+            SECCIÓN 1: HERO / BIENVENIDA
+            Representa una sección genérica autónoma con su encabezado h1 de máximo nivel (único en la página).
+        -->
+        <section id="inicio" class="seccion-hero" aria-labelledby="titulo-hero">
+            <header class="hero-textos">
+                <!-- ÚNICO h1 del documento para cumplir con la jerarquía estricta sin saltos -->
+                <h1 id="titulo-hero" class="titulo-principal">Puertas Abiertas al Conocimiento en Nuestra Comunidad</h1>
+                <p class="hero-descripcion">
+                    Un espacio público, gratuito e inclusivo pensado para fomentar la lectura, el pensamiento crítico y el encuentro entre vecinos de todas las edades.
+                </p>
+                <p class="hero-acciones">
+                    <a href="#reserva-cita" class="boton-primario">Agendar Cita de Lectura</a>
+                    <a href="#catalogo-prestamos" class="boton-secundario">Explorar Colección</a>
+                </p>
+            </header>
+
+            <!--
+                ELEMENTO <figure> y <figcaption>: Semántica para imágenes con su respectiva leyenda explicativa.
+                Cumple WCAG 1.1.1 (Contenido no textual) mediante texto alternativo descriptivo.
+            -->
+            <figure class="hero-figura">
+                <img src="img/llibros.jpg" alt="Estantes de madera repletos de libros clasificados en la sala de lectura comunitaria" width="600" height="300" class="hero-imagen">
+                <figcaption class="hero-pie-foto">
+                    Nuestra sala de lectura comunitaria cuenta con más de 1.500 títulos a disposición de los vecinos.
+                </figcaption>
+            </figure>
+        </section>
+
+        <!--
+            SECCIÓN 2: SOBRE NOSOTROS
+            Encabezado de segundo nivel h2; describe la misión, visión e impacto barrial.
+        -->
+        <section id="sobre-nosotros" class="seccion-nosotros" aria-labelledby="titulo-nosotros">
+            <h2 id="titulo-nosotros" class="seccion-titulo">Sobre Nuestra Biblioteca Barrial</h2>
+            
+            <p class="parrafo-destacado">
+                Nacida como una iniciativa de los vecinos y líderes comunitarios, la <strong>Biblioteca Barrial</strong> busca democratizar el acceso a la literatura y crear un refugio seguro para el estudio, la investigación escolar y el deleite de la lectura.
+            </p>
+
+            <article class="pilar-tarjeta">
+                <h3 class="pilar-titulo">Misión Comunitaria</h3>
+                <p>
+                    Garantizar el acceso libre y sin barreras a recursos bibliográficos, estimulando el hábito lector en niños, jóvenes y adultos para transformar nuestra comunidad a través de la educación constante.
+                </p>
+            </article>
+
+            <article class="pilar-tarjeta">
+                <h3 class="pilar-titulo">Valores de Convivencia</h3>
+                <ul class="lista-valores">
+                    <li><strong>Inclusión y gratuidad:</strong> Todos los servicios son 100% gratuitos y abiertos a la comunidad.</li>
+                    <li><strong>Cuidado colectivo:</strong> Cada libro es un bien público resguardado por el compromiso vecinal.</li>
+                    <li><strong>Diversidad de saberes:</strong> Promovemos tanto la literatura universal como las voces literarias locales y ecuatorianas.</li>
+                </ul>
+            </article>
+        </section>
+
+        <!--
+            SECCIÓN 3: NOVEDADES - NUEVOS LIBROS LLEGADOS
+            Implementada con elementos semánticos <article> para cada libro independiente.
+            Según WHATWG, <article> representa una composición autónoma reutilizable o distribuible.
+        -->
+        <section id="novedades" class="seccion-novedades" aria-labelledby="titulo-novedades">
+            <h2 id="titulo-novedades" class="seccion-titulo">Novedades y Nuevos Libros Llegados</h2>
+            <p class="seccion-subtitulo">
+                Descubre las últimas obras literarias donadas e incorporadas al catálogo durante este mes.
+            </p>
+
+            <article class="tarjeta-libro">
+                <header class="libro-cabecera">
+                    <span class="etiqueta-categoria">Realismo Mágico</span>
+                    <h3 class="libro-titulo">Cien años de soledad</h3>
+                    <p class="libro-autor">Por <cite>Gabriel García Márquez</cite></p>
+                </header>
+                <blockquote class="libro-cita" cite="https://es.wikipedia.org/wiki/Cien_a%C3%B1os_de_soledad">
+                    <p>«Muchos años después, frente al pelotón de fusilamiento, el coronel Aureliano Buendía había de recordar aquella tarde remota en que su padre lo llevó a conocer el hielo.»</p>
+                </blockquote>
+                <footer class="libro-pie">
+                    <p class="libro-fecha">Ingreso: <time datetime="2026-10-15">15 de octubre de 2026</time></p>
+                    <p class="libro-estado disponible">Estado: <strong>Disponible en sala</strong></p>
+                </footer>
+            </article>
+
+            <article class="tarjeta-libro">
+                <header class="libro-cabecera">
+                    <span class="etiqueta-categoria">Literatura Ecuatoriana</span>
+                    <h3 class="libro-titulo">Huasipungo</h3>
+                    <p class="libro-autor">Por <cite>Jorge Icaza</cite></p>
+                </header>
+                <blockquote class="libro-cita" cite="https://es.wikipedia.org/wiki/Huasipungo">
+                    <p>«La obra cumbre del indigenismo ecuatoriano que retrata con crudeza la dignidad, el trabajo campesino y la lucha por la tierra.»</p>
+                </blockquote>
+                <footer class="libro-pie">
+                    <p class="libro-fecha">Ingreso: <time datetime="2026-10-18">18 de octubre de 2026</time></p>
+                    <p class="libro-estado disponible-prestamo">Estado: <strong>Préstamo a domicilio</strong></p>
+                </footer>
+            </article>
+
+            <article class="tarjeta-libro">
+                <header class="libro-cabecera">
+                    <span class="etiqueta-categoria">Literatura Universal</span>
+                    <h3 class="libro-titulo">El Principito</h3>
+                    <p class="libro-autor">Por <cite>Antoine de Saint-Exupéry</cite></p>
+                </header>
+                <blockquote class="libro-cita" cite="https://es.wikipedia.org/wiki/El_principito">
+                    <p>«He aquí mi secreto, que no puede ser más simple: solo con el corazón se puede ver bien; lo esencial es invisible para los ojos.»</p>
+                </blockquote>
+                <footer class="libro-pie">
+                    <p class="libro-fecha">Ingreso: <time datetime="2026-10-20">20 de octubre de 2026</time></p>
+                    <p class="libro-estado disponible">Estado: <strong>Sala infantil y juvenil</strong></p>
+                </footer>
+            </article>
+        </section>
+
+        <!--
+            SECCIÓN 4: TABLA DE DATOS ACCESIBLE
+            Cumple WCAG 1.3.1 (Información y relaciones):
+            - <caption> obligatorio para título accesible de la tabla.
+            - <thead> y <tbody> estructurados.
+            - Encabezados con scope="col" (columnas) y scope="row" (filas).
+        -->
+        <section id="catalogo-prestamos" class="seccion-tabla" aria-labelledby="titulo-catalogo">
+            <h2 id="titulo-catalogo" class="seccion-titulo">Catálogo General y Políticas de Préstamo</h2>
+            <p class="seccion-subtitulo">
+                Consulte la disponibilidad de ejemplares clasificados por género literario y los plazos máximos para retiro a domicilio.
+            </p>
+
+            <table class="tabla-datos">
+                <caption class="tabla-titulo">Inventario disponible y plazos normativos de préstamo bibliotecario</caption>
+                <thead>
+                    <tr>
+                        <th scope="col">Categoría Temática</th>
+                        <th scope="col">Ejemplares Disponibles</th>
+                        <th scope="col">Tiempo Máximo</th>
+                        <th scope="col">Modalidad Autorizada</th>
+                        <th scope="col">Renovaciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">Novela y Narrativa Contemporánea</th>
+                        <td>120 títulos</td>
+                        <td>15 días calendario</td>
+                        <td>Domicilio y Sala</td>
+                        <td>Hasta 2 veces</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Literatura Infantil y Cuentos</th>
+                        <td>85 títulos</td>
+                        <td>21 días calendario</td>
+                        <td>Domicilio y Sala</td>
+                        <td>Hasta 1 vez</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Historia y Realidad Ecuatoriana</th>
+                        <td>60 títulos</td>
+                        <td>10 días calendario</td>
+                        <td>Domicilio y Sala</td>
+                        <td>Hasta 2 veces</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Diccionarios y Enciclopedias</th>
+                        <td>45 volúmenes</td>
+                        <td>Mismo día</td>
+                        <td>Exclusivo consulta en Sala</td>
+                        <td>No aplica</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Revistas y Periódicos Comunitarios</th>
+                        <td>70 ejemplares</td>
+                        <td>7 días calendario</td>
+                        <td>Domicilio y Sala</td>
+                        <td>Hasta 1 vez</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!--
+            SECCIÓN 5: ACORDEÓN ACCESIBLE (<details> y <summary>) - CERO JAVASCRIPT
+            REQUISITO PERSONALIZADO FICHA N.º 10:
+            "Un acordeón accesible con details y summary, sin JavaScript"
+            Accesible de forma nativa por teclado (Enter / Barra espaciadora) y expuesto al árbol de accesibilidad (WCAG 4.1.2).
+        -->
+        <section id="preguntas-frecuentes" class="seccion-acordeon" aria-labelledby="titulo-faq">
+            <h2 id="titulo-faq" class="seccion-titulo">Preguntas Frecuentes y Normativa Barrial</h2>
+            <p class="seccion-subtitulo">
+                Conozca los lineamientos del servicio de biblioteca comunitaria. Haga clic o presione Enter para desplegar cada consulta.
+            </p>
+
+            <details class="item-acordeon" open>
+                <summary class="cabecera-acordeon">¿Cómo puedo obtener mi carnet de lector barrial?</summary>
+                <article class="contenido-acordeon">
+                    <p>
+                        Para obtener tu carnet de lector, solo debes acudir a la biblioteca con una copia física o digital de tu documento de identidad y un comprobante de servicio básico (luz, agua o teléfono) que verifique tu domicilio en el barrio. El trámite es inmediato, gratuito y no requiere renovación anual.
+                    </p>
+                </article>
+            </details>
+
+            <details class="item-acordeon">
+                <summary class="cabecera-acordeon">¿Cuántos libros puedo solicitar en préstamo simultáneo?</summary>
+                <article class="contenido-acordeon">
+                    <p>
+                        Cada usuario con carnet comunitario activo puede retirar hasta un máximo de tres (3) libros simultáneos. Si estás al día en la fecha de devolución, puedes gestionar una renovación presencial o mediante nuestro formulario web.
+                    </p>
+                </article>
+            </details>
+
+            <details class="item-acordeon">
+                <summary class="cabecera-acordeon">¿Existen sanciones económicas por entregas tardías?</summary>
+                <article class="contenido-acordeon">
+                    <p>
+                        Nuestra biblioteca barrial no aplica multas monetarias. En caso de retraso no justificado, se aplica una pausa temporal en el derecho a préstamo a domicilio equivalente a la cantidad de días de demora. Fomentamos la responsabilidad comunitaria y el respeto al derecho del próximo lector.
+                    </p>
+                </article>
+            </details>
+
+            <details class="item-acordeon">
+                <summary class="cabecera-acordeon">¿Cómo puedo donar libros a la colección comunitaria?</summary>
+                <article class="contenido-acordeon">
+                    <p>
+                        Recibimos con gratitud donaciones de libros de literatura, ciencia, texto escolar e infantil en buen estado de conservación. Puedes entregarlos de martes a sábado en el mostrador principal o escribirnos previamente para coordinar la entrega.
+                    </p>
+                </article>
+            </details>
+        </section>
+
+        <!--
+            SECCIÓN 6: FORMULARIO ACCESIBLE CON VALIDACIÓN NATIVA
+            Cumple WCAG 1.3.1, 2.4.6, 3.3.1 y 3.3.2:
+            - Al menos 5 campos con tipos adecuados.
+            - Agrupación semántica con <fieldset> y <legend>.
+            - Todo control tiene un <label for="id"> asociado explícitamente.
+            - Validación nativa en cliente (required, min, max, pattern).
+            REQUISITO PERSONALIZADO FICHA N.º 10:
+            "Selección múltiple con datalist" (se incluye campo interactivo con <datalist> nativo de HTML5).
+        -->
+        <section id="reserva-cita" class="seccion-formulario" aria-labelledby="titulo-formulario">
+            <h2 id="titulo-formulario" class="seccion-titulo">Reserva tu Cita de Lectura o Préstamo</h2>
+            <p class="seccion-subtitulo">
+                Planifica tu visita a la sala de estudio o agenda el retiro anticipado de ejemplares completando el siguiente formulario.
+            </p>
+
+            <form action="#reserva-cita" method="post" class="formulario-cita">
+
+                <!-- Grupo 1: Datos del Ciudadano -->
+                <fieldset class="grupo-formulario">
+                    <legend class="leyenda-formulario">Datos Personales del Solicitante</legend>
+
+                    <p class="campo-formulario">
+                        <label for="nombre-completo" class="etiqueta-control">Nombres y Apellidos completos <span aria-hidden="true">*</span></label>
+                        <input type="text" id="nombre-completo" name="nombre" class="entrada-control" required minlength="3" maxlength="60" autocomplete="name" placeholder="Ej: Daniel Durán">
+                    </p>
+
+                    <p class="campo-formulario">
+                        <label for="correo-usuario" class="etiqueta-control">Correo Electrónico <span aria-hidden="true">*</span></label>
+                        <input type="email" id="correo-usuario" name="correo" class="entrada-control" required autocomplete="email" placeholder="ejemplo@correo.com">
+                    </p>
+
+                    <p class="campo-formulario">
+                        <label for="telefono-usuario" class="etiqueta-control">Teléfono Celular de Contacto <span aria-hidden="true">*</span></label>
+                        <!-- Validación nativa con pattern: celular ecuatoriano de 10 dígitos que inicia con 09 -->
+                        <input type="tel" id="telefono-usuario" name="telefono" class="entrada-control" required pattern="^09[0-9]{8}$" title="Ingrese un número celular ecuatoriano válido de 10 dígitos (ej: 0987654321)" placeholder="0987654321">
+                    </p>
+                </fieldset>
+
+                <!-- Grupo 2: Selección y Búsqueda con Datalist (Ficha 10) -->
+                <fieldset class="grupo-formulario">
+                    <legend class="leyenda-formulario">Detalles de la Visita y Selección con Datalist (Ficha N.º 10)</legend>
+
+                    <!--
+                        CAMPO ESPECIAL FICHA 10: Selección asistida con <datalist>
+                        Permite al usuario escribir libremente o seleccionar entre opciones predeterminadas nativas de HTML5.
+                    -->
+                    <p class="campo-formulario">
+                        <label for="busqueda-libro" class="etiqueta-control">Título, Autor o Género de Interés <span aria-hidden="true">*</span></label>
+                        <input type="search" id="busqueda-libro" name="libro_interes" class="entrada-control" list="lista-libros-sugeridos" required placeholder="Escriba o elija una sugerencia del listado...">
+                        
+                        <!-- Elemento <datalist> con opciones enriquecidas -->
+                        <datalist id="lista-libros-sugeridos">
+                            <option value="Cien años de soledad - Gabriel García Márquez">
+                            <option value="Huasipungo - Jorge Icaza">
+                            <option value="El Principito - Antoine de Saint-Exupéry">
+                            <option value="Don Quijote de la Mancha - Miguel de Cervantes">
+                            <option value="La emancipada - Miguel Riofrío">
+                            <option value="Ficciones - Jorge Luis Borges">
+                            <option value="Ensayo sobre la ceguera - José Saramago">
+                            <option value="Novela y Ficción General">
+                            <option value="Literatura Infantil y Juvenil">
+                            <option value="Historia y Ciencias Sociales">
+                        </datalist>
+                    </p>
+
+                    <p class="campo-formulario">
+                        <label for="servicio-biblioteca" class="etiqueta-control">Modalidad del Servicio Solicitado <span aria-hidden="true">*</span></label>
+                        <select id="servicio-biblioteca" name="servicio" class="entrada-control entrada-select" required>
+                            <option value="" disabled selected>Seleccione el tipo de servicio</option>
+                            <option value="sala-silenciosa">Uso de Sala de Lectura Silenciosa</option>
+                            <option value="prestamo-domicilio">Retiro de Libros a Domicilio</option>
+                            <option value="investigacion-escolar">Asesoría e Investigación Escolar</option>
+                            <option value="taller-infantil">Taller de Lectura y Cuentacuentos</option>
+                        </select>
+                    </p>
+
+                    <p class="campo-formulario">
+                        <label for="fecha-visita" class="etiqueta-control">Fecha de la Cita <span aria-hidden="true">*</span></label>
+                        <!-- Validación nativa: fechas permitidas de visita -->
+                        <input type="date" id="fecha-visita" name="fecha_cita" class="entrada-control" required min="2026-10-23" max="2026-12-31">
+                    </p>
+
+                    <p class="campo-formulario">
+                        <label for="hora-visita" class="etiqueta-control">Hora Estimada de Llegada <span aria-hidden="true">*</span></label>
+                        <!-- Validación nativa de horario de apertura de biblioteca (08:30 a 18:00) -->
+                        <input type="time" id="hora-visita" name="hora_cita" class="entrada-control" required min="08:30" max="18:00">
+                    </p>
+                </fieldset>
+
+                <!-- Grupo 3: Confirmación y Políticas -->
+                <fieldset class="grupo-formulario">
+                    <legend class="leyenda-formulario">Términos y Compromiso Comunitario</legend>
+
+                    <p class="campo-formulario campo-checkbox">
+                        <input type="checkbox" id="acepto-terminos" name="acepto_terminos" class="entrada-checkbox" required>
+                        <label for="acepto-terminos" class="etiqueta-checkbox">
+                            Me comprometo a respetar el silencio en sala y a cuidar los libros en préstamo según el reglamento barrial. <span aria-hidden="true">*</span>
+                        </label>
+                    </p>
+                </fieldset>
+
+                <!-- Botones semánticos con tipo explícito (type="submit" y type="reset") -->
+                <p class="acciones-formulario">
+                    <button type="submit" class="boton-enviar">Confirmar Reserva de Cita</button>
+                    <button type="reset" class="boton-limpiar">Restablecer Formulario</button>
+                </p>
+            </form>
+        </section>
+
+    </main>
+
+    <!--
+        ELEMENTO <aside>: Según WHATWG, representa una sección del documento cuyo contenido
+        se relaciona tangencialmente con el contenido circundante (noticias, horarios y avisos barriales).
+    -->
+    <aside class="barra-lateral" aria-labelledby="titulo-lateral">
+        <h2 id="titulo-lateral" class="lateral-titulo">Información Barrial</h2>
+
+        <article class="tarjeta-lateral">
+            <h3 class="tarjeta-lateral-titulo">Horarios de Atención</h3>
+            <ul class="lista-horarios">
+                <li><strong>Lunes a Viernes:</strong> 08:30 a 18:30</li>
+                <li><strong>Sábados:</strong> 09:00 a 14:00</li>
+                <li><strong>Domingos y Feriados:</strong> Cerrado por mantenimiento</li>
+            </ul>
+        </article>
+
+        <article class="tarjeta-lateral">
+            <h3 class="tarjeta-lateral-titulo">Club de Lectores del Barrio</h3>
+            <p>
+                Nos reunimos cada sábado a las 10:30 para debatir una obra escogida por votación comunitaria. ¡El café y el té corren por cuenta de la biblioteca!
+            </p>
+        </article>
+
+        <article class="tarjeta-lateral">
+            <h3 class="tarjeta-lateral-titulo">Buzón de Sugerencias Literarias</h3>
+            <p>
+                ¿Quieres que la biblioteca adquiera un libro específico? Envíanos tu sugerencia al correo oficial o escríbenos directamente.
+            </p>
+        </article>
+    </aside>
+
+    <!--
+        ELEMENTO <footer>: Según WHATWG, representa el pie de página para su sección ancestro o raíz.
+        IMPORTANTE: Debe ubicarse dentro del elemento <body> para ser HTML5 válido.
+    -->
+    <footer class="pie-sitio">
+        <section class="pie-contenido" aria-labelledby="titulo-pie">
+            <h2 id="titulo-pie" class="pie-titulo">Biblioteca Barrial Comunitaria</h2>
+            
+            <!-- Elemento <address> para información de contacto según WHATWG -->
+            <address class="pie-contacto">
+                <p>Ubicación: Calle de las Letras y Av. Comunitaria, Sector Central</p>
+                <p>Teléfono: <a href="tel:+593987654321" class="enlace-pie">(09) 8765-4321</a></p>
+                <p>Correo de contacto: <a href="mailto:ddurano@est.ups.edu.ec?subject=Consulta%20Biblioteca%20Barrial" class="enlace-pie">ddurano@est.ups.edu.ec</a></p>
+            </address>
+
+            <nav class="pie-navegacion" aria-label="Navegación del pie de página">
+                <ul class="pie-lista-enlaces">
+                    <li><a href="#inicio" class="enlace-pie">Subir al Inicio</a></li>
+                    <li><a href="#sobre-nosotros" class="enlace-pie">Sobre Nosotros</a></li>
+                    <li><a href="#catalogo-prestamos" class="enlace-pie">Políticas de Préstamo</a></li>
+                    <li><a href="#preguntas-frecuentes" class="enlace-pie">Preguntas Frecuentes</a></li>
+                </ul>
+            </nav>
+
+            <p class="pie-legal">
+                <small>&copy; 2026 Biblioteca Barrial Comunitaria. Proyecto académico desarrollado por <strong>Daniel Durán</strong> (Ficha N.º 10). Diseñado bajo estándares web WHATWG, W3C y accesibilidad WCAG 2.2 Nivel AA.</small>
+            </p>
+        </section>
+    </footer>
+
+</body>
 </html>
