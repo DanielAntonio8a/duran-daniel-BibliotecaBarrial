@@ -1,911 +1,102 @@
-/* ==========================================================================
-   PRÁCTICA: Estándares HTML5, CSS3 y Accesibilidad Web (WCAG 2.2 AA)
-   ESTUDIANTE: Daniel Antonio Durán Ochoa
-   FICHA ASIGNADA: N.º 10 - Biblioteca Barrial
-   
-   REQUISITOS CUMPLIDOS:
-   1. Colores definidos como variables CSS (--color-...) con contraste >= 4.5:1.
-   2. Layout general con CSS Grid (cambio de distribución en 768px).
-   3. Componentes internos maquetados con Flexbox (header, nav, libros, formulario).
-   4. Breakpoint principal en exactamente 768 px.
-   5. Acordeón accesible (<details> y <summary>) sin JavaScript.
-   6. Foco visible (:focus-visible) para navegación íntegra con teclado (WCAG 2.4.7).
-   7. Totalmente responsivo: sin desbordamiento horizontal a 360 px.
-   8. Cero errores de sintaxis CSS según validador W3C.
-   ========================================================================== */
-
-/* --------------------------------------------------------------------------
-   1. VARIABLES CSS (CUSTOM PROPERTIES) Y PALETA DE CONTRASTE ACCESIBLE
-   Verificación de ratios de contraste según WCAG 2.2 Nivel AA:
-   - Texto principal (#0f172a) sobre fondo blanco (#ffffff): Ratio 15.6:1 (Supera 4.5:1 y 7:1)
-   - Texto secundario (#334155) sobre fondo blanco (#ffffff): Ratio 8.5:1 (Supera 4.5:1)
-   - Botón primario (#1e3a8a) con texto blanco (#ffffff): Ratio 9.8:1 (Supera 4.5:1)
-   - Botón secundario (#b45309) con texto blanco (#ffffff): Ratio 4.6:1 (Supera 4.5:1)
-   -------------------------------------------------------------------------- */
 :root {
-    /* Paleta cromática institucional */
-    --color-primario: #1e3a8a;          /* Azul cobalto profundo */
-    --color-primario-hover: #172554;    /* Azul medianoche para interacción */
-    --color-secundario: #b45309;        /* Tono ámbar / madera de biblioteca */
-    --color-secundario-hover: #92400e;  /* Ámbar oscuro */
-    
-    /* Superficies y fondos */
-    --color-fondo-body: #f1f5f9;        /* Gris pizarra claro */
-    --color-fondo-tarjeta: #ffffff;     /* Blanco puro para tarjetas y artículos */
-    --color-fondo-alt: #e2e8f0;         /* Gris tenue para detalles y tablas */
-    --color-fondo-destacado: #eff6ff;   /* Azul hielo tenue para avisos */
-
-    /* Tipografía y textos de alto contraste */
-    --color-texto-principal: #0f172a;   /* Grafito oscuro (Contraste 15.6:1 sobre blanco) */
-    --color-texto-secundario: #334155;  /* Grafito medio (Contraste 8.5:1 sobre blanco) */
-    --color-texto-claro: #ffffff;       /* Blanco puro para fondos oscuros */
-    
-    /* Bordes y estados */
-    --color-borde: #cbd5e1;             /* Borde neutro accesible */
-    --color-borde-fuerte: #94a3b8;      /* Borde de control de formulario */
-    --color-foco: #2563eb;              /* Anillo de foco accesible WCAG 2.4.7 */
-    --color-exito: #166534;             /* Verde esmeralda (Contraste 5.5:1) */
-    --color-error: #991b1b;             /* Rojo carmín (Contraste 6.8:1) */
-
-    /* Espaciado modular y bordes redondeados */
-    --radio-borde: 8px;
-    --sombra-tarjeta: 0 4px 6px -1px rgba(15, 23, 42, 0.08), 0 2px 4px -2px rgba(15, 23, 42, 0.06);
-    --sombra-elevada: 0 10px 15px -3px rgba(15, 23, 42, 0.1), 0 4px 6px -4px rgba(15, 23, 42, 0.08);
+    --color-fondo: #f5f5ee;
+    --color-texto: #202820;
+    --color-enlace: #174b38;
 }
 
-/* --------------------------------------------------------------------------
-   2. RESETEO BASE Y CONFIGURACIÓN DE TIPOGRAFÍA ACCESIBLE
-   -------------------------------------------------------------------------- */
-*,
-*::before,
-*::after {
+* {
     box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
-html {
-    scroll-behavior: smooth;
-    font-size: 100%; /* Respeta el tamaño de fuente configurado por el usuario */
 }
 
 body {
-    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    font-size: 1rem;
-    line-height: 1.6;
-    color: var(--color-texto-principal);
-    background-color: var(--color-fondo-body);
-    min-height: 100vh;
-    overflow-x: hidden; /* Previene scroll horizontal */
+    margin: 0;
+    padding: 12px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    background: var(--color-fondo);
+    color: var(--color-texto);
+    font-family: Arial, sans-serif;
 }
 
-/* Imágenes fluidas para evitar desbordamientos a 360px */
+header,
+section,
+aside,
+footer {
+    background: white;
+    padding: 12px;
+    border: 1px solid #aaa;
+}
+
+main {
+    min-width: 0;
+}
+
+main section {
+    margin-bottom: 12px;
+}
+
+nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+a {
+    color: var(--color-enlace);
+}
+
 img {
     max-width: 100%;
     height: auto;
-    display: block;
 }
 
-/* --------------------------------------------------------------------------
-   3. WCAG 2.4.7 FOCO VISIBLE Y NAVEGACIÓN POR TECLADO
-   Todo elemento interactivo muestra un indicador de foco nítido y de alto contraste.
-   -------------------------------------------------------------------------- */
-a:focus-visible,
-button:focus-visible,
-input:focus-visible,
-select:focus-visible,
-summary:focus-visible {
-    outline: 3px solid var(--color-foco);
-    outline-offset: 3px;
-    border-radius: 4px;
-}
-
-/* Enlace de salto accesible para lectores de pantalla y navegación por teclado */
-.enlace-salto {
-    position: absolute;
-    top: -9999px;
-    left: 1rem;
-    background-color: var(--color-primario);
-    color: var(--color-texto-claro);
-    padding: 0.75rem 1.25rem;
-    font-weight: bold;
-    text-decoration: none;
-    border-radius: var(--radio-borde);
-    z-index: 1000;
-}
-
-.enlace-salto:focus {
-    top: 1rem;
-}
-
-/* --------------------------------------------------------------------------
-   4. ESTRUCTURA GLOBAL CON CSS GRID (Mobile First)
-   Distribución inicial a 1 columna para móviles.
-   -------------------------------------------------------------------------- */
-body {
-    display: grid;
-    grid-template-areas:
-        "header"
-        "main"
-        "aside"
-        "footer";
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-    padding: 0.75rem;
-}
-
-/* Asignación de áreas de Grid semánticas */
-.encabezado-sitio {
-    grid-area: header;
-}
-
-.contenedor-principal {
-    grid-area: main;
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    min-width: 0; /* Previene que elementos anchos rompan el grid */
-}
-
-.barra-lateral {
-    grid-area: aside;
-}
-
-.pie-sitio {
-    grid-area: footer;
-}
-
-/* --------------------------------------------------------------------------
-   5. COMPONENTES FLEXBOX: ENCABEZADO Y NAVEGACIÓN PRINCIPAL
-   -------------------------------------------------------------------------- */
-.encabezado-sitio {
-    background-color: var(--color-fondo-tarjeta);
-    border: 1px solid var(--color-borde);
-    border-radius: var(--radio-borde);
-    box-shadow: var(--sombra-tarjeta);
-    padding: 1rem 1.25rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    align-items: center;
-}
-
-.marca-sitio {
-    display: flex;
-    align-items: center;
-    gap: 0.875rem;
-}
-
-.logo-imagen {
-    width: 65px;
-    height: 65px;
-    object-fit: contain;
-    border-radius: 50%;
-    background-color: var(--color-fondo-alt);
-    border: 2px solid var(--color-primario);
-}
-
-.marca-texto {
-    display: flex;
-    flex-direction: column;
-}
-
-.marca-titulo {
-    font-size: 1.35rem;
-    font-weight: 800;
-    color: var(--color-primario);
-    line-height: 1.2;
-}
-
-.marca-subtitulo {
-    font-size: 0.85rem;
-    color: var(--color-texto-secundario);
-    font-weight: 500;
-}
-
-/* Navegación con Flexbox */
-.navegacion-principal {
-    width: 100%;
-}
-
-.lista-navegacion {
-    list-style: none;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    justify-content: center;
-}
-
-.enlace-nav {
-    display: inline-block;
-    padding: 0.5rem 0.875rem;
-    color: var(--color-texto-principal);
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 0.95rem;
-    border-radius: 6px;
-    border: 1px solid transparent;
-    transition: background-color 0.2s ease, color 0.2s ease;
-}
-
-.enlace-nav:hover {
-    background-color: var(--color-fondo-alt);
-    color: var(--color-primario);
-}
-
-.enlace-nav.enlace-destacado {
-    background-color: var(--color-primario);
-    color: var(--color-texto-claro);
-}
-
-.enlace-nav.enlace-destacado:hover {
-    background-color: var(--color-primario-hover);
-}
-
-/* --------------------------------------------------------------------------
-   6. SECCIÓN HERO (BIENVENIDA)
-   -------------------------------------------------------------------------- */
-.seccion-hero {
-    background-color: var(--color-fondo-tarjeta);
-    border: 1px solid var(--color-borde);
-    border-radius: var(--radio-borde);
-    box-shadow: var(--sombra-tarjeta);
-    padding: 1.5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-}
-
-.hero-textos {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-.titulo-principal {
-    font-size: 1.75rem;
-    font-weight: 800;
-    color: var(--color-primario);
-    line-height: 1.25;
-}
-
-.hero-descripcion {
-    font-size: 1.05rem;
-    color: var(--color-texto-secundario);
-}
-
-.hero-acciones {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-}
-
-/* Botones con estándares WCAG para contraste y área táctil (>=44px) */
-.boton-primario,
-.boton-secundario,
-.boton-enviar,
-.boton-limpiar {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 44px; /* WCAG 2.5.5 Tamaño del objetivo */
-    padding: 0.625rem 1.25rem;
-    font-size: 0.95rem;
-    font-weight: 700;
-    text-decoration: none;
-    border-radius: 6px;
-    cursor: pointer;
-    border: 1px solid transparent;
-    transition: background-color 0.2s ease, transform 0.1s ease;
-}
-
-.boton-primario {
-    background-color: var(--color-primario);
-    color: var(--color-texto-claro);
-}
-
-.boton-primario:hover {
-    background-color: var(--color-primario-hover);
-}
-
-.boton-secundario {
-    background-color: var(--color-secundario);
-    color: var(--color-texto-claro);
-}
-
-.boton-secundario:hover {
-    background-color: var(--color-secundario-hover);
-}
-
-.hero-figura {
-    background-color: var(--color-fondo-alt);
-    border-radius: var(--radio-borde);
-    overflow: hidden;
-    border: 1px solid var(--color-borde);
-}
-
-.hero-imagen {
-    width: 100%;
-    max-height: 320px;
-    object-fit: cover;
-}
-
-.hero-pie-foto {
-    font-size: 0.85rem;
-    color: var(--color-texto-secundario);
-    padding: 0.5rem 0.75rem;
-    background-color: var(--color-fondo-tarjeta);
-    border-top: 1px solid var(--color-borde);
-    font-style: italic;
-}
-
-/* --------------------------------------------------------------------------
-   7. SECCIÓN SOBRE NOSOTROS Y PILARES COMUNITARIOS
-   -------------------------------------------------------------------------- */
-.seccion-nosotros {
-    background-color: var(--color-fondo-tarjeta);
-    border: 1px solid var(--color-borde);
-    border-radius: var(--radio-borde);
-    box-shadow: var(--sombra-tarjeta);
-    padding: 1.5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
-}
-
-.seccion-titulo {
-    font-size: 1.45rem;
-    font-weight: 700;
-    color: var(--color-primario);
-    border-bottom: 2px solid var(--color-fondo-alt);
-    padding-bottom: 0.5rem;
-}
-
-.seccion-subtitulo {
-    font-size: 0.95rem;
-    color: var(--color-texto-secundario);
-    margin-top: -0.5rem;
-}
-
-.parrafo-destacado {
-    font-size: 1.05rem;
-    line-height: 1.65;
-    color: var(--color-texto-principal);
-}
-
-.pilar-tarjeta {
-    background-color: var(--color-fondo-destacado);
-    border-left: 4px solid var(--color-primario);
-    border-radius: 0 var(--radio-borde) var(--radio-borde) 0;
-    padding: 1rem 1.25rem;
-}
-
-.pilar-titulo {
-    font-size: 1.15rem;
-    font-weight: 700;
-    color: var(--color-primario);
-    margin-bottom: 0.5rem;
-}
-
-.lista-valores {
-    list-style-type: square;
-    padding-left: 1.25rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-}
-
-/* --------------------------------------------------------------------------
-   8. SECCIÓN NOVEDADES (NUEVOS LIBROS) CON FLEXBOX Y CARDS
-   -------------------------------------------------------------------------- */
-.seccion-novedades {
-    background-color: var(--color-fondo-tarjeta);
-    border: 1px solid var(--color-borde);
-    border-radius: var(--radio-borde);
-    box-shadow: var(--sombra-tarjeta);
-    padding: 1.5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
-}
-
-.tarjeta-libro {
-    background-color: var(--color-fondo-body);
-    border: 1px solid var(--color-borde);
-    border-radius: var(--radio-borde);
-    padding: 1.25rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.tarjeta-libro:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--sombra-elevada);
-}
-
-.etiqueta-categoria {
-    display: inline-block;
-    align-self: flex-start;
-    background-color: var(--color-fondo-destacado);
-    color: var(--color-primario);
-    font-size: 0.75rem;
-    font-weight: 700;
-    padding: 0.25rem 0.625rem;
-    border-radius: 9999px;
-    border: 1px solid var(--color-borde);
-    margin-bottom: 0.25rem;
-}
-
-.libro-titulo {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: var(--color-texto-principal);
-}
-
-.libro-autor {
-    font-size: 0.9rem;
-    color: var(--color-texto-secundario);
-    font-weight: 500;
-}
-
-.libro-cita {
-    font-style: italic;
-    background-color: var(--color-fondo-tarjeta);
-    border-left: 3px solid var(--color-secundario);
-    padding: 0.75rem 1rem;
-    border-radius: 4px;
-    color: var(--color-texto-secundario);
-    font-size: 0.95rem;
-}
-
-.libro-pie {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    font-size: 0.85rem;
-    border-top: 1px solid var(--color-borde);
-    padding-top: 0.5rem;
-}
-
-.libro-estado.disponible strong {
-    color: var(--color-exito);
-}
-
-.libro-estado.disponible-prestamo strong {
-    color: var(--color-secundario);
-}
-
-/* --------------------------------------------------------------------------
-   9. SECCIÓN TABLA DE DATOS ACCESIBLE
-   Cumple con scope="col", scope="row" y caption visible.
-   -------------------------------------------------------------------------- */
-.seccion-tabla {
-    background-color: var(--color-fondo-tarjeta);
-    border: 1px solid var(--color-borde);
-    border-radius: var(--radio-borde);
-    box-shadow: var(--sombra-tarjeta);
-    padding: 1.5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
-    overflow-x: auto; /* Permite scroll interno de la tabla en 360px sin romper el viewport */
-}
-
-.tabla-datos {
+table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 0.925rem;
-    text-align: left;
-    min-width: 500px; /* Previene compresión excesiva de datos */
-}
-
-.tabla-titulo {
-    caption-side: top;
-    font-size: 1.05rem;
-    font-weight: 700;
-    color: var(--color-primario);
-    padding-bottom: 0.75rem;
-    text-align: left;
-}
-
-.tabla-datos th,
-.tabla-datos td {
-    padding: 0.75rem 1rem;
-    border: 1px solid var(--color-borde);
-}
-
-.tabla-datos thead th {
-    background-color: var(--color-primario);
-    color: var(--color-texto-claro);
-    font-weight: 700;
-}
-
-.tabla-datos tbody th {
-    background-color: var(--color-fondo-destacado);
-    color: var(--color-primario);
-    font-weight: 600;
-}
-
-.tabla-datos tbody tr:nth-child(even) td {
-    background-color: var(--color-fondo-body);
-}
-
-.tabla-datos tbody tr:hover td,
-.tabla-datos tbody tr:hover th {
-    background-color: #dbeafe; /* Azul tenue al pasar el ratón */
-}
-
-/* --------------------------------------------------------------------------
-   10. SECCIÓN ACORDEÓN ACCESIBLE (<details> y <summary>) - CERO JS (FICHA 10)
-   -------------------------------------------------------------------------- */
-.seccion-acordeon {
-    background-color: var(--color-fondo-tarjeta);
-    border: 1px solid var(--color-borde);
-    border-radius: var(--radio-borde);
-    box-shadow: var(--sombra-tarjeta);
-    padding: 1.5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-.item-acordeon {
-    border: 1px solid var(--color-borde);
-    border-radius: var(--radio-borde);
-    background-color: var(--color-fondo-body);
-    overflow: hidden;
-    transition: border-color 0.2s ease;
-}
-
-.item-acordeon[open] {
-    border-color: var(--color-primario);
-    background-color: var(--color-fondo-tarjeta);
-}
-
-.cabecera-acordeon {
-    padding: 1rem 1.25rem;
-    font-size: 1rem;
-    font-weight: 700;
-    color: var(--color-texto-principal);
-    cursor: pointer;
-    background-color: var(--color-fondo-body);
-    user-select: none;
-    transition: background-color 0.2s ease, color 0.2s ease;
-    min-height: 44px; /* WCAG 2.5.5 Área táctil */
-    display: list-item;
-}
-
-.cabecera-acordeon:hover {
-    background-color: var(--color-fondo-alt);
-    color: var(--color-primario);
-}
-
-.item-acordeon[open] .cabecera-acordeon {
-    background-color: var(--color-fondo-destacado);
-    color: var(--color-primario);
-    border-bottom: 1px solid var(--color-borde);
-}
-
-.contenido-acordeon {
-    padding: 1.25rem;
-    font-size: 0.95rem;
-    line-height: 1.6;
-    color: var(--color-texto-secundario);
-}
-
-/* --------------------------------------------------------------------------
-   11. SECCIÓN FORMULARIO ACCESIBLE CON VALIDACIÓN NATIVA Y DATALIST (FICHA 10)
-   -------------------------------------------------------------------------- */
-.seccion-formulario {
-    background-color: var(--color-fondo-tarjeta);
-    border: 1px solid var(--color-borde);
-    border-radius: var(--radio-borde);
-    box-shadow: var(--sombra-tarjeta);
-    padding: 1.5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
-}
-
-.formulario-cita {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-}
-
-.grupo-formulario {
-    border: 1px solid var(--color-borde);
-    border-radius: var(--radio-borde);
-    padding: 1.25rem;
-    background-color: var(--color-fondo-body);
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-.leyenda-formulario {
-    font-size: 1.05rem;
-    font-weight: 700;
-    color: var(--color-primario);
-    padding: 0 0.5rem;
-    background-color: transparent;
-}
-
-.campo-formulario {
-    display: flex;
-    flex-direction: column;
-    gap: 0.375rem;
-}
-
-.etiqueta-control {
     font-size: 0.9rem;
-    font-weight: 600;
-    color: var(--color-texto-principal);
 }
 
-.etiqueta-control span {
-    color: var(--color-error);
+th,
+td {
+    border: 1px solid #777;
+    padding: 4px;
+    overflow-wrap: anywhere;
 }
 
-/* Controles de formulario accesibles */
-.entrada-control {
+fieldset {
+    min-width: 0;
+}
+
+label {
+    display: block;
+    margin-top: 10px;
+}
+
+input {
+    display: block;
     width: 100%;
-    min-height: 44px; /* WCAG 2.5.5 */
-    padding: 0.625rem 0.875rem;
-    font-family: inherit;
-    font-size: 0.95rem;
-    color: var(--color-texto-principal);
-    background-color: var(--color-fondo-tarjeta);
-    border: 1.5px solid var(--color-borde-fuerte);
-    border-radius: 6px;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    max-width: 350px;
+    padding: 8px;
 }
 
-.entrada-control:focus {
-    border-color: var(--color-foco);
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.25);
+button {
+    margin-top: 12px;
+    padding: 8px 16px;
 }
 
-/* Indicadores de validación nativa */
-.entrada-control:user-invalid {
-    border-color: var(--color-error);
-    background-color: #fef2f2;
+:focus-visible {
+    outline: 3px solid #b34400;
+    outline-offset: 2px;
 }
 
-.entrada-control:user-valid:not(:placeholder-shown) {
-    border-color: var(--color-exito);
-}
-
-.campo-checkbox {
-    flex-direction: row;
-    align-items: flex-start;
-    gap: 0.75rem;
-}
-
-.entrada-checkbox {
-    width: 20px;
-    height: 20px;
-    accent-color: var(--color-primario);
-    margin-top: 0.2rem;
-    cursor: pointer;
-}
-
-.etiqueta-checkbox {
-    font-size: 0.9rem;
-    line-height: 1.45;
-    color: var(--color-texto-principal);
-    cursor: pointer;
-}
-
-.acciones-formulario {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.875rem;
-}
-
-.boton-enviar {
-    background-color: var(--color-primario);
-    color: var(--color-texto-claro);
-    flex: 1;
-    min-width: 200px;
-}
-
-.boton-enviar:hover {
-    background-color: var(--color-primario-hover);
-}
-
-.boton-limpiar {
-    background-color: var(--color-fondo-alt);
-    color: var(--color-texto-principal);
-    border: 1px solid var(--color-borde);
-}
-
-.boton-limpiar:hover {
-    background-color: #cbd5e1;
-}
-
-/* --------------------------------------------------------------------------
-   12. ELEMENTO <aside> (BARRA LATERAL INFORMATIVA)
-   -------------------------------------------------------------------------- */
-.barra-lateral {
-    background-color: var(--color-fondo-tarjeta);
-    border: 1px solid var(--color-borde);
-    border-radius: var(--radio-borde);
-    box-shadow: var(--sombra-tarjeta);
-    padding: 1.5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
-}
-
-.lateral-titulo {
-    font-size: 1.35rem;
-    font-weight: 700;
-    color: var(--color-primario);
-    border-bottom: 2px solid var(--color-fondo-alt);
-    padding-bottom: 0.5rem;
-}
-
-.tarjeta-lateral {
-    background-color: var(--color-fondo-body);
-    border: 1px solid var(--color-borde);
-    border-radius: var(--radio-borde);
-    padding: 1rem 1.25rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-}
-
-.tarjeta-lateral-titulo {
-    font-size: 1.05rem;
-    font-weight: 700;
-    color: var(--color-secundario);
-}
-
-.lista-horarios {
-    list-style: none;
-    font-size: 0.875rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.35rem;
-}
-
-/* --------------------------------------------------------------------------
-   13. ELEMENTO <footer> (PIE DE PÁGINA ACCESIBLE)
-   -------------------------------------------------------------------------- */
-.pie-sitio {
-    background-color: var(--color-texto-principal);
-    color: var(--color-texto-claro);
-    border-radius: var(--radio-borde);
-    padding: 2rem 1.5rem;
-}
-
-.pie-contenido {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    text-align: center;
-}
-
-.pie-titulo {
-    font-size: 1.35rem;
-    font-weight: 700;
-    color: #93c5fd; /* Azul suave con alto contraste sobre fondo oscuro */
-}
-
-.pie-contacto {
-    font-style: normal;
-    display: flex;
-    flex-direction: column;
-    gap: 0.35rem;
-    font-size: 0.95rem;
-    color: #e2e8f0;
-}
-
-.enlace-pie {
-    color: #93c5fd;
-    text-decoration: underline;
-    text-underline-offset: 3px;
-    transition: color 0.2s ease;
-}
-
-.enlace-pie:hover {
-    color: #ffffff;
-}
-
-.pie-lista-enlaces {
-    list-style: none;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 1rem;
-    padding-top: 0.5rem;
-    border-top: 1px solid #334155;
-}
-
-.pie-legal {
-    font-size: 0.825rem;
-    color: #94a3b8;
-    line-height: 1.5;
-    padding-top: 1rem;
-    border-top: 1px solid #1e293b;
-}
-
-.pie-legal strong {
-    color: #f8fafc;
-}
-
-/* --------------------------------------------------------------------------
-   14. BREAKPOINT PRINCIPAL: 768 PX (REQUISITO PERSONALIZADO FICHA N.º 10)
-   Conmuta la estructura de 1 columna a la maqueta de escritorio con Grid.
-   -------------------------------------------------------------------------- */
 @media (min-width: 768px) {
     body {
-        grid-template-areas:
-            "header header"
-            "main   aside"
-            "footer footer";
-        grid-template-columns: minmax(0, 1fr) 280px;
-        max-width: 1200px;
-        margin-inline: auto;
-        padding: 1.5rem;
-        gap: 1.75rem;
+        grid-template-columns: minmax(0, 1fr) 190px;
     }
 
-    .encabezado-sitio {
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        padding: 1.25rem 2rem;
-    }
-
-    .navegacion-principal {
-        width: auto;
-    }
-
-    .lista-navegacion {
-        justify-content: flex-end;
-    }
-
-    .seccion-hero {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        align-items: center;
-        gap: 2rem;
-    }
-
-    .seccion-nosotros {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 1.5rem;
-    }
-
-    .seccion-nosotros .seccion-titulo,
-    .seccion-nosotros .parrafo-destacado {
+    header,
+    footer {
         grid-column: 1 / -1;
-    }
-
-    .seccion-novedades {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-        gap: 1.5rem;
-    }
-
-    .seccion-novedades .seccion-titulo,
-    .seccion-novedades .seccion-subtitulo {
-        grid-column: 1 / -1;
-    }
-
-    .pie-contenido {
-        text-align: left;
-    }
-
-    .pie-lista-enlaces {
-        justify-content: flex-start;
     }
 }

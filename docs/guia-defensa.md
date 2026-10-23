@@ -1,126 +1,56 @@
-# Guía de Defensa Técnica para la Revisión en Clase (Parte 4)
+# Guía sencilla para la defensa
 
-**Estudiante:** Daniel Antonio Durán Ochoa  
-**Número de Lista:** 10  
-**Proyecto:** Biblioteca Barrial Comunitaria  
-**Materia:** Programación Web - UPS  
+**Proyecto:** Biblioteca Barrial  
+**Ficha:** N.º 10
 
-Esta guía contiene la fundamentación teórica y técnica exacta basada en los estándares **WHATWG (HTML)**, **W3C (CSS)** y **WCAG 2.2 AA (Accesibilidad)** para responder con total seguridad a cualquier pregunta del profesor durante la revisión en vivo.
+## ¿Qué es HTML?
 
----
+HTML sirve para organizar el contenido de la página: títulos, textos, imágenes, tablas y formularios.
 
-## 1. Justificación de Decisiones Semánticas (WHATWG)
+## ¿Qué es CSS?
 
-### ¿Por qué Cero `<div>`?
-- **Definición WHATWG:** El elemento `<div>` no tiene significado semántico alguno; es solo un contenedor genérico de último recurso.
-- **Nuestra solución:** Utilizamos únicamente elementos con significado expreso: `<header>`, `<nav>`, `<main>`, `<section>`, `<article>`, `<aside>`, `<footer>`, `<figure>`, `<figcaption>`, `<form>`, `<fieldset>`, `<legend>`, `<details>`, `<summary>`.
+CSS sirve para cambiar colores, tamaños, espacios y distribución de la página.
 
-### Diferencia entre `<section>` y `<article>`
-- **`<section>`:** Representa una sección temática genérica de un documento (ej. "Sobre Nosotros", "Preguntas Frecuentes", "Formulario de Reserva"). Siempre debe tener un encabezado (`<h2>`).
-- **`<article>`:** Representa una composición autónoma e independiente que podría reutilizarse o distribuirse fuera del contexto de la página (ej. cada tarjeta de libro en "Nuevos Libros Llegados", cada pregunta del acordeón, cada noticia del aside).
+## ¿Para qué sirven las etiquetas principales?
 
-### Jerarquía de Encabezados Estricta
-- **Regla:** Solo existe un único `<h1>` en toda la página (`<h1 id="titulo-hero">`), que define el tema central del documento.
-- Todas las secciones principales usan `<h2>`, y los subcomponentes internos (como cada libro o tarjeta de pilar) usan `<h3>`.
-- **Nunca se saltan niveles** (de `<h1>` se pasa a `<h2>`, y de `<h2>` a `<h3>`, jamás de `<h1>` a `<h3>` o `<h4>`).
+- `header`: parte superior de la página.
+- `nav`: menú de navegación.
+- `main`: contenido principal.
+- `section`: agrupa contenido sobre un tema.
+- `article`: contenido que puede entenderse por separado.
+- `aside`: información adicional.
+- `footer`: pie de página.
 
-### ¿Por qué `<footer>` debe ir dentro de `<body>`?
-- En el borrador inicial, el `<footer>` estaba fuera de `<body>`. La especificación WHATWG define que todo el contenido visible de una página web debe ser descendiente directo de `<body>`. Colocarlo fuera genera un error crítico de parseo en el validador W3C.
+## ¿Qué es un formulario?
 
----
+Es una parte donde el usuario escribe información. `label` indica qué dato va en cada campo; `required` permite pedir que un campo sea obligatorio.
 
-## 2. Requisitos de la Ficha Personalizada N.º 10
+## ¿Qué es datalist?
 
-### A. Campo con `<datalist>` (Selección y Sugerencia de Libros)
-- **Implementación:**
-  ```html
-  <input type="search" id="busqueda-libro" name="libro_interes" list="lista-libros-sugeridos" required ...>
-  <datalist id="lista-libros-sugeridos">
-      <option value="Cien años de soledad - Gabriel García Márquez">
-      <option value="Huasipungo - Jorge Icaza">
-      ...
-  </datalist>
-  ```
-- **Por qué cumple el estándar:** Proporciona autocompletado y selección asistida directamente en el navegador sin una sola línea de JavaScript, permitiendo al usuario tanto elegir una opción predeterminada como escribir un título personalizado.
+Es una lista de sugerencias para un campo de texto. **Por sí solo no permite elegir varias opciones a la vez.** La selección múltiple necesita una solución adicional.
 
-### B. Acordeón Accesible con `<details>` y `<summary>` (Cero JavaScript)
-- **Implementación:**
-  ```html
-  <details class="item-acordeon" open>
-      <summary class="cabecera-acordeon">¿Cómo puedo obtener mi carnet de lector barrial?</summary>
-      <article class="contenido-acordeon">
-          <p>...</p>
-      </article>
-  </details>
-  ```
-- **Por qué cumple la accesibilidad:**
-  - El elemento `<summary>` es un botón interactivo nativo según WHATWG.
-  - El navegador maneja el estado `open` y lo comunica automáticamente al árbol de accesibilidad (Accessibility Tree) con el rol adecuado (WCAG 4.1.2).
-  - Funciona con teclado por defecto: foco con `Tab`, apertura y cierre con `Enter` o `Espacio`.
+## ¿Qué es un acordeón?
 
-### C. Breakpoint Principal en 768 px
-- **Implementación:** `@media (min-width: 768px) { ... }`
-- **Estrategia Mobile-First:** La hoja de estilos define primero el diseño en una sola columna para dispositivos móviles (desde 360 px), y al alcanzar exactamente los `768px` conmuta a la grilla de escritorio de dos columnas (`main` y `aside`).
+Es una pregunta que se puede abrir y cerrar para mostrar la respuesta. Se hace con `details` y `summary`, sin JavaScript.
 
----
+## ¿Qué es responsive?
 
-## 3. Accesibilidad Web (WCAG 2.2 Nivel AA)
+Significa que la página se adapta a diferentes tamaños de pantalla. En mi ficha, el cambio principal se hace a los **768 px**.
 
-### A. Ratios de Contraste (Criterio 1.4.3 - Mínimo 4.5:1 en texto normal)
-- **Texto principal (`#0f172a`) sobre blanco (`#ffffff`):** Ratio **15.6:1** (Supera nivel AAA).
-- **Texto secundario (`#334155`) sobre blanco (`#ffffff`):** Ratio **8.5:1** (Supera nivel AAA).
-- **Botón primario (`#1e3a8a`) con texto blanco (`#ffffff`):** Ratio **9.8:1**.
-- **Botón secundario (`#b45309`) con texto blanco (`#ffffff`):** Ratio **4.6:1**.
+## ¿Qué son Grid y Flexbox?
 
-### B. Navegación por Teclado y Foco Visible (Criterio 2.4.7)
-- Todos los controles interactivos (`<a>`, `<button>`, `<input>`, `<select>`, `<summary>`) tienen definido:
-  ```css
-  :focus-visible {
-      outline: 3px solid var(--color-foco);
-      outline-offset: 3px;
-  }
-  ```
-- **Enlace de salto (Skip link):** `<a href="#contenido-principal" class="enlace-salto">Saltar al contenido principal</a>`, visible únicamente al recibir el foco con `Tab`. Cumple WCAG 2.4.1 (Evitar bloques repetitivos).
+- **Grid:** organiza bloques en filas y columnas.
+- **Flexbox:** ordena elementos en una fila o columna.
 
-### C. Formulario Accesible (Criterios 1.3.1, 3.3.1 y 3.3.2)
-- Cada campo cuenta con su `<label for="id-control">` asociado explícitamente mediante el atributo `for` que coincide con el `id` del input.
-- Agrupación semántica con `<fieldset>` y títulos con `<legend>`.
-- Validaciones nativas: `required`, `pattern="^09[0-9]{8}$"` (celular de 10 dígitos), `min`, `max`.
+## ¿Qué es accesibilidad?
 
-### D. Tabla de Datos Accesible (Criterio 1.3.1)
-- Título obligatorio con `<caption>`.
-- Estructura con `<thead>` y `<tbody>`.
-- Encabezados clasificados con `scope="col"` para columnas y `scope="row"` para filas.
+Es hacer que más personas puedan utilizar la página. Por ejemplo, usando textos legibles, etiquetas claras y navegación con teclado.
 
----
+## ¿Cómo reviso mi página?
 
-## 4. CSS: Cascada, Especificidad y Layouts
+1. Abrir `index.html` en el navegador.
+2. Probar enlaces, formulario y acordeón.
+3. Revisar cómo se ve en celular.
+4. Revisar HTML y CSS con los validadores oficiales.
 
-### Especificidad en CSS
-Si el profesor pregunta: *"¿Por qué esta regla gana sobre esta otra?"*
-- La especificidad se calcula como `(Inline, IDs, Clases/Pseudo-clases/Atributos, Elementos/Pseudo-elementos)`:
-  - Elemento HTML (`p`, `h2`): `0, 0, 0, 1`
-  - Clase (`.tarjeta-libro`): `0, 0, 1, 0`
-  - Pseudo-clase (`:hover`, `:focus-visible`, `[open]`): `0, 0, 1, 0`
-  - ID (`#inicio`, `#reserva-cita`): `0, 1, 0, 0`
-  - Estilo inline (`style="..."`): `1, 0, 0, 0`
-- Si la especificidad es igual, gana la **regla declarada más abajo en la hoja de estilos** (principio de Cascada).
-
-### CSS Grid vs Flexbox
-- **CSS Grid (Estructura bidimensional):** Se utiliza en el contenedor global `body` con `grid-template-areas` (`"header header"`, `"main aside"`, `"footer footer"`) para controlar filas y columnas simultáneamente.
-- **CSS Flexbox (Estructura unidimensional):** Se utiliza en componentes internos:
-  - La barra de navegación (`.lista-navegacion`) para alinear horizontalmente los enlaces con `gap` y `flex-wrap`.
-  - Las acciones del hero y del formulario (`.hero-acciones`, `.acciones-formulario`).
-  - La tarjeta de marca (`.marca-sitio`) para centrar el logo y el texto.
-
----
-
-## 5. Respuestas Rápidas para Cambios en Vivo en Clase
-
-1. **Si el profesor pide mover el bloque del aside a la izquierda:**
-   - En `css/estilos.css`, dentro de `@media (min-width: 768px)`:
-   - Cambiar `grid-template-areas: "header header" "aside main" "footer footer";` y `grid-template-columns: 280px minmax(0, 1fr);`.
-2. **Si el profesor pide agregar un nuevo campo al formulario:**
-   - Crear un `<p class="campo-formulario">` con un `<label for="nuevo-id">` y un `<input id="nuevo-id" name="nuevo-campo" class="entrada-control">`.
-3. **Si el profesor pregunta por qué no se produce scroll horizontal a 360 px:**
-   - Porque `img` tiene `max-width: 100%`, el `body` tiene `overflow-x: hidden`, la grilla móvil tiene `grid-template-columns: 1fr`, y la tabla tiene un contenedor con `overflow-x: auto` para que solo la tabla sea desplazable sin romper la pantalla.
+**Para la defensa:** explica solo las etiquetas y estilos que realmente usaste. Si alguna prueba todavía no se hizo, no afirmes que está aprobada.
