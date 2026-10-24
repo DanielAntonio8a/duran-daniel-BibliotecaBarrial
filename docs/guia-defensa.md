@@ -53,4 +53,3 @@ Es hacer que más personas puedan utilizar la página. Por ejemplo, usando texto
 3. Revisar cómo se ve en celular.
 4. Revisar HTML y CSS con los validadores oficiales.
 
-**Para la defensa:** explica solo las etiquetas y estilos que realmente usaste. Si alguna prueba todavía no se hizo, no afirmes que está aprobada.
